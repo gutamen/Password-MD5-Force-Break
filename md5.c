@@ -161,9 +161,9 @@ int main(int argc, char **argv) {
     len = strlen(msg);
  
     // benchmark
-    for (i = 0; i < 1000000; i++) {
-        md5((uint8_t*)msg, len, result);
-    }
+    //for (i = 0; i < 1000000; i++) {
+    md5((uint8_t*)msg, len, result);
+    //}
  
     // display result
     for (i = 0; i < 16; i++)
