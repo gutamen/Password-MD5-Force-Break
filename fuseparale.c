@@ -224,7 +224,7 @@ void iterativeIterateParalel(byte* hash1, byte* hash2, int len) {
     int incrementador = 0;
     
     
-    #pragma omp parallel shared(parada) private(incrementador, hash2) num_threads(4)
+    #pragma omp parallel shared(parada) private(incrementador, hash2) num_threads(12)
     {
         int trava = 0;
         int vetorBase36[len+1];
@@ -355,5 +355,5 @@ int main(int argc, char **argv) {
 	//iterativeIterate(hash1, hash2, 10);
 	clock_t end = clock();
 	double tempo_execucao = (double)(end - start) / CLOCKS_PER_SEC;
-	 printf("Tempo de execução: %.6f segundos\n", tempo_execucao);
+	printf("Tempo de execução: %.6f segundos\n", tempo_execucao);
 }
