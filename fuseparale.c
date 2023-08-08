@@ -153,7 +153,7 @@ void md5(const uint8_t *initial_msg, size_t initial_len, uint8_t *digest) {
 
 
 char letters[] = "\0ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
+char letters2[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
 /*
  * Print a digest of MD5 hash.
@@ -170,22 +170,21 @@ void print_digest(byte * hash){
 
 void iterate(byte * hash1, byte * hash2, char *str, int idx, int len, int *ok) {
 	int c;
-
 	// 'ok' determines when the algorithm matches.
 	if(*ok) return;
 	if (idx < (len - 1)) {
 		// Iterate for all letter combination.
-		for (c = 0; c < strlen(letters) && *ok==0; ++c) {
-			str[idx] = letters[c];
+		for (c = 0; c < strlen(letters2) && *ok==0; ++c) {
+			str[idx] = letters2[c];
 			// Recursive call
 			iterate(hash1, hash2, str, idx + 1, len, ok);
 		}
 	} else {
 		// Include all last letters and compare the hashes.
-		for (c = 0; c < strlen(letters) && *ok==0; ++c) {
-			str[idx] = letters[c];
-			md5((byte *) str, strlen(str), hash2);
-            printf("digeriu %s\n", str);
+		for (c = 0; c < strlen(letters2) && *ok==0; ++c) {
+			str[idx] = letters2[c];
+			md5(str, strlen(str), hash2);
+            //printf("digeriu %s\n", str);
 			if(strncmp((char*)hash1, (char*)hash2, MD5_DIGEST_LENGTH) == 0){
 				printf("found: %s\n", str);
 				print_digest(hash2);
@@ -355,36 +354,26 @@ int main(int argc, char **argv) {
 	// Convert hexadecimal string to hash byte.
 	strHex_to_uint8_t(hash1_str, hash1);
 	
-	//char teste[4] = "0000";
 	
-	//md5(teste, 4, hash2);
 	
-	/*for(int i = 0; i < MD5_DIGEST_LENGTH; i++)
-		printf("%x", hash2[i]);
-	
-	printf("\n");*/
-
 	
 	//print_digest(hash1);
 
-	// Generate all possible passwords of different sizes.
-	/*for(len = 1; len <= lenMax; len++){
-		memset(str, 0, len+1);
-    iterate(hash1, hash2, str, 0, len, &ok);
-	}*/
+	
 	printf("Começo iteração \n");
 	clock_t start = clock();
     
 	
 	// Generate all possible passwords of different sizes.
-	/*for(len = 1; len <= lenMax; len++){
+	for(len = 1; len <= lenMax; len++){
 		memset(str, 0, len+1);
-    iterate(hash1, hash2, str, 0, len, &ok);
-	}*/
+		//printf("kkk %d\n", ok);
+		iterate(hash1, hash2, str, 0, len, &ok);
+	}
 	
 	
 	
-    iterativeIterateParalel(hash1, hash2, 10);
+    //iterativeIterateParalel(hash1, hash2, 10);
 	//iterativeIterate(hash1, hash2, 10);
 	clock_t end = clock();
 	double tempo_execucao = (double)(end - start) / CLOCKS_PER_SEC;
